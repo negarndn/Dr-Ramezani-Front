@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <h1>بیمارستان</h1>
+    <form id="dataForm" action="/submit" method="post">
+        <label for="day">روز</label>
+        <select id="day" name="day">
+            <!-- Populate options with numbers from 1 to 31 -->
+            {% for i in range(1, 32) %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="month">ماه</label>
+        <select id="month" name="month">
+            <!-- Populate options with Persian calendar months -->
+            <option value=1>فروردین</option>
+            <option value=2>اردیبهشت</option>
+            <option value=3>خرداد</option>
+            <option value=4>تیر</option>
+            <option value=5>مرداد</option>
+            <option value=6>شهریور</option>
+            <option value=7>مهر</option>
+            <option value=8>آبان</option>
+            <option value=9>آذر</option>
+            <option value=10>دی</option>
+            <option value=11>بهمن</option>
+            <option value=12>اسفند</option>
+
+
+            <!-- Add other months -->
+        </select><br>
+
+        <label for="year">سال</label>
+        <input type="number" id="year" name="year" value="1379"><br>
+
+        <label for="hospital_type">نام بیمارستان</label>
+        <select id="hospital_type" name="hospital_type">
+            <!-- Populate options with different types -->
+            <option value=1>بیمارستان 1</option>
+            <option value=2>بیمارستان 2</option>
+            <option value=3>بیمارستان 3</option>
+            <option value=4>بیمارستان 4</option>
+            <option value=5>بیمارستان 5</option>
+            <option value=6>بیمارستان 6</option>
+            <option value=7>بیمارستان 7</option>
+            <option value=8>بیمارستان 8</option>
+            <option value=9>بیمارستان 9</option>
+            <option value=10>بیمارستان 10</option>
+            <option value=11>بیمارستان 11</option>
+            <option value=12>بیمارستان 12</option>
+            <option value=13>بیمارستان 13</option>
+            <!-- Add other types -->
+        </select><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+    document.getElementById('dataForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        fetch('/submit', {
+            method: 'POST',
+            body: new FormData(document.getElementById('dataForm'))
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.number !== undefined) {
+                document.getElementById('result').innerHTML = '<p>number: ' + data.number + '</p><img src="' + data.picture + '" alt="Picture">';
+            } else {
+                document.getElementById('result').textContent = 'Error occurred!';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>
